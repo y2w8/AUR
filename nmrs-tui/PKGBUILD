@@ -1,0 +1,26 @@
+# Maintainer: Yousef Al-Harbi <yousefalharby416@gmail.com>
+pkgname=nmrs-tui
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="A fast, aesthetic, and Vim-friendly NetworkManager TUI built in Rust."
+arch=('x86_64')
+url="https://github.com/y2w8/nmrs-tui"
+license=('GPL-3.0-only')
+depends=('networkmanager')
+makedepends=('rust' 'git')
+
+source=(
+  "$pkgname-$pkgver.tar.gz::https://github.com/y2w8/nmrs-tui/archive/refs/tags/v$pkgver.tar.gz"
+)
+sha256sums=('1c92a9cac68c0908bb70469b46a38271993875920aa012056f6561aa5aa78233')
+
+build() {
+  cd "$pkgname-$pkgver"
+  cargo build --release --locked
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -Dm755 target/release/nmrs-tui "$pkgdir/usr/bin/nmrs-tui"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
